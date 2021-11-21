@@ -704,6 +704,8 @@ namespace ZIDomaci
             this.Controls.Add(this.seedLbl);
             this.Controls.Add(this.inputSeedTbx);
             this.MainMenuStrip = this.menuStrip;
+            this.MaximumSize = new System.Drawing.Size(690, 799);
+            this.MinimumSize = new System.Drawing.Size(690, 799);
             this.Name = "A51Cipher";
             this.Text = "A51 Cipher";
             ((System.ComponentModel.ISupportInitialize)(this.XVoteBitNud)).EndInit();
