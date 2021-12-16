@@ -1,0 +1,8 @@
+C:\Users\KORISNIK\Desktop\ZI\A51\A51\bin\Debug\A51.exe
+C:\Users\KORISNIK\Desktop\ZI\A51\A51\bin\Debug\A51.pdb
+C:\Users\KORISNIK\Desktop\ZI\A51\A51\obj\Debug\A51.csproj.AssemblyReference.cache
+C:\Users\KORISNIK\Desktop\ZI\A51\A51\obj\Debug\A51.Form1.resources
+C:\Users\KORISNIK\Desktop\ZI\A51\A51\obj\Debug\A51.csproj.GenerateResource.cache
+C:\Users\KORISNIK\Desktop\ZI\A51\A51\obj\Debug\A51.csproj.CoreCompileInputs.cache
+C:\Users\KORISNIK\Desktop\ZI\A51\A51\obj\Debug\A51.exe
+C:\Users\KORISNIK\Desktop\ZI\A51\A51\obj\Debug\A51.pdb
