@@ -19,6 +19,7 @@ namespace ZIDomaci
         public String OutputFolder { get; set; }
         public bool A51Initialized { get; set; }
         public bool XXTEAInitialized { get; set; }
+        public bool CBCEnabled { get; set; }
         public String SelectedCipher { get; set; }
         public CipherForm()
         {
@@ -28,8 +29,10 @@ namespace ZIDomaci
             XXTEACipher = new XXTEA();
             A51Initialized = false;
             XXTEAInitialized = false;
+            CBCEnabled = false;
             fsw.EnableRaisingEvents = false;
             CipherStatusTbx.BackColor = CipherStatusTbx.BackColor;  //needed to trigger color change of a readonly textbox
+            CBCStatusTbx.BackColor = CipherStatusTbx.BackColor;
             A51SaveCipherMenuStripItem.Enabled = false;
             SelectedCipher = "A51";
         }
@@ -212,7 +215,14 @@ namespace ZIDomaci
             ZCurrentStepBitsTbx.Text = ZCurrentStepBitsTbx.Text.Trim();
 
         }
-
+        public void A51DisplayInitializationVector()
+        {
+            A51CurrentInitializationVectorTbx.Text = A51Cipher.InitializationVector.ToString();
+        }
+        public void A51ClearInitializationVector()
+        {
+            A51InitializationVectorTbx.Text = "";
+        }
         #endregion
 
 
@@ -249,6 +259,7 @@ namespace ZIDomaci
                         tw.WriteLine(yStepBits.Trim());
                         tw.WriteLine(zStepBits.Trim());
 
+                        tw.WriteLine(A51Cipher.InitializationVector.ToString());
                     }
                 }
             }
@@ -314,10 +325,14 @@ namespace ZIDomaci
                                 A51Cipher.LoadRegisterSeeds(xSeed, ySeed, zSeed);
                             A51Cipher.LoadVoteBits(xvb, yvb, zvb);
                             A51Cipher.LoadStepBits(xsb.ToArray(), ysb.ToArray(), zsb.ToArray());
-
+                            
+                            ushort iv = ushort.Parse(tr.ReadLine());
+                            A51Cipher.InitializationVector = iv;
+                            
                             DisplayCurrentSeeds();
                             DisplayCurrentStepBits();
                             DisplayCurrentVoteBits();
+                            A51DisplayInitializationVector();
                         }
                         catch (Exception ex)
                         {
@@ -338,7 +353,7 @@ namespace ZIDomaci
         {
             try
             {
-                if (SelectedCipher=="A51")
+                if (SelectedCipher == "A51")
                 {
                     if (inputSeedTbx.Text.Trim() != "")
                         LoadGlobalSeedBtn_Click(sender, e);
@@ -346,16 +361,18 @@ namespace ZIDomaci
                         LoadRegisterSeedsBtn_Click(sender, e);
                     LoadStepBitsBtn_Click(sender, e);
                     LoadVoteBitsBtn_Click(sender, e);
+                    A51LoadInitializationVectorBtn_Click(sender, e);
                 }
                 else if (SelectedCipher == "XXTEA")
                 {
                     LoadKeysBtn_Click(sender, e);
                     LoadBlockSizeBtn_Click(sender, e);
+                    XXTEALoadInitializationVectorBtn_Click(sender, e);
                 }
             }
             catch (Exception ex)
             {
-                return;
+                //return;
             }
             finally
             {
@@ -369,16 +386,50 @@ namespace ZIDomaci
 
         public void EncodeDecodeFile(String path, bool chooseOutput = false, bool isEncode = true)
         {
-            String encodedDecodedFileContentsUTF = string.Empty;
+            String fileContents = "";
+            String[] splitFileContents;
+            String encodedDecodedFileContentsUTF = "";
+            ushort crc = 0, crcFromFile = 0;
+
+            using (StreamReader reader = new StreamReader(path))
+            {
+                fileContents = reader.ReadToEnd();
+            }
+
+            if (isEncode)
+                crc = CRC.Checksum((new UTF8Encoding()).GetBytes(fileContents));
+            else
+            {
+                splitFileContents = fileContents.Split("\n\n");
+                if (splitFileContents.Length != 2)
+                {
+                    MessageBox.Show("CRC not found!", "Invalid file format", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                crcFromFile = ushort.Parse(splitFileContents[0]);
+                fileContents = splitFileContents[1];
+            }
 
             if (SelectedCipher == "A51")
-                encodedDecodedFileContentsUTF = A51EncodeDecodeFile(path);
+                encodedDecodedFileContentsUTF = A51EncodeDecodeFile(fileContents, isEncode, CBCEnabled);
 
             else if (SelectedCipher == "XXTEA")
-                if(isEncode)
-                    encodedDecodedFileContentsUTF = XXTEAEncodeFile(path);
+                if (isEncode)
+                    encodedDecodedFileContentsUTF = XXTEAEncodeFile(fileContents, CBCEnabled);
                 else
-                    encodedDecodedFileContentsUTF = XXTEADecodeFile(path);
+                    encodedDecodedFileContentsUTF = XXTEADecodeFile(fileContents, CBCEnabled);
+
+
+            if (!isEncode)
+            {
+                crc = CRC.Checksum((new UTF8Encoding()).GetBytes(encodedDecodedFileContentsUTF));
+
+                if (crc != crcFromFile)
+                {
+                    MessageBox.Show("CRCs do not match!", "Validation error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
 
             String encodedFilePath = string.Empty;
 
@@ -398,165 +449,145 @@ namespace ZIDomaci
                 if (File.Exists(encodedFilePath))
                     File.Delete(encodedFilePath);
             }
-            using (StreamWriter saveStream = new StreamWriter(encodedFilePath, append:false, Encoding.UTF8))
+            using (StreamWriter saveStream = new StreamWriter(encodedFilePath))
             {
+                if (isEncode)
+                {
+                    saveStream.Write(crc.ToString());
+                    saveStream.Write("\n\n");
+                }
                 saveStream.Write(encodedDecodedFileContentsUTF);
             }
-
-
         }
 
-        private String A51EncodeDecodeFile(String path)
+        private String A51EncodeDecodeFile(String data, bool isEncode,bool useCBC)
         {
+            if (data == "") return data;
+            //if (!isEncode) data = Convert.FromBase64String(data);
             String fileContents = string.Empty;
             String fileContentsUTF = string.Empty;
 
             String encodedFileContents = string.Empty;
             String encodedFileContentsUTF = string.Empty;
 
-            using (StreamReader reader = new StreamReader(path))
+            int character = data[0];
+            int iterator = 0;
+            int encodedCharacter;
+            int hash = A51Cipher.InitializationVector;
+            while (iterator != data.Length)
             {
-
-                int character = reader.Read();
-
-                int encodedCharacter;
-                while (character != -1)
+                character = data[iterator++];
+                if (isEncode && useCBC)
                 {
-                    encodedCharacter = (int)A51Cipher.Encode2Bytes((ushort)character);
-
-                    fileContents += character;
-                    encodedFileContents += encodedCharacter;
-
-                    fileContentsUTF += char.ConvertFromUtf32(character);
-                    encodedFileContentsUTF += char.ConvertFromUtf32(encodedCharacter);
-
-                    character = reader.Read();
+                    character ^= hash;
                 }
-                string message = "Bytes read:\n" + fileContents + "\nIn readable format:\n" + fileContentsUTF + "\nEncoded:\n" + encodedFileContents + "\nEncoded Readable:\n" + encodedFileContentsUTF;
-                MessageBox.Show(message);
+                encodedCharacter = (int)A51Cipher.Encode2Bytes((ushort)character);
+
+                if (isEncode && useCBC)
+                    hash = encodedCharacter;
+
+                if (!isEncode && useCBC)
+                {
+                    encodedCharacter ^= hash;
+                    hash = character;
+                }
+                fileContents += character;
+                encodedFileContents += encodedCharacter;
+
+                fileContentsUTF += char.ConvertFromUtf32(character);
+                encodedFileContentsUTF += char.ConvertFromUtf32(encodedCharacter);
+
+
             }
+            //string message = "Bytes read:\n" + fileContents + "\nIn readable format:\n" + fileContentsUTF + "\nEncoded:\n" + encodedFileContents + "\nEncoded Readable:\n" + encodedFileContentsUTF;
+            //MessageBox.Show(message);
 
             A51Cipher.ResetRegisters();
             return encodedFileContentsUTF;
         }
-        //private String XXTEAEncodeDecodeFile(String path, bool isEncode)
-        //{
-        //    String encodedDecodedFileContentsUTF = string.Empty;
-
-        //    using (StreamReader reader = new StreamReader(path,Encoding.UTF8))
-        //    {
-
-        //        char[] block = new char[XXTEACipher.N * 2];
-
-        //        int size = reader.ReadBlock(block, 0, XXTEACipher.N * 2);
-        //        encodedDecodedFileContentsUTF = string.Empty;
-        //        while (size != 0)
-        //        {
-        //            int wordsSize = (size % 2 == 0) ? size / 2 : (size + 1) / 2;     //+1 kako bih mogao da upakujem sve u 32b reci
-        //            uint[] words = new uint[wordsSize];
-        //            for (var i = 0; i < wordsSize; i++)
-        //            {
-        //                ushort upper = block[i * 2];
-        //                ushort lower = (i * 2 + 1 > size) ? ' ' : block[i * 2 + 1];
-        //                words[i] = ((uint)upper << 16) | lower;
-        //            }
-        //           // MessageBox.Show(new String(block));
-                   
-        //            if (isEncode)
-        //                XXTEACipher.EncodeBlock(ref words, (ushort)wordsSize);
-        //            else
-        //                XXTEACipher.DecodeBlock(ref words, (ushort)wordsSize);
-
-        //            for (var i = 0; i < wordsSize; i++)
-        //            {
-        //                ushort upper = (ushort)(words[i] >> 16);
-        //                ushort lower = (ushort)words[i];
-        //                //encodedDecodedFileContentsUTF += char.ConvertFromUtf32(upper);
-        //                //encodedDecodedFileContentsUTF += char.ConvertFromUtf32(lower);
-        //                encodedDecodedFileContentsUTF += Convert.ToChar(upper);
-        //                encodedDecodedFileContentsUTF += Convert.ToChar(lower);
-
-        //            }
-        //            //MessageBox.Show(encodedDecodedFileContentsUTF);
-        //            size = reader.ReadBlock(block, 0, XXTEACipher.N * 2);
-        //        }
-        //        //string message = "Bytes read:\n" + fileContents + "\nIn readable format:\n" + fileContentsUTF + "\nEncoded:\n" + encodedFileContents + "\nEncoded Readable:\n" + encodedFileContentsUTF;
-        //        //MessageBox.Show(message);
-        //    }
-        //    return encodedDecodedFileContentsUTF;
-        //}
-        private String XXTEAEncodeFile(String path)
+        private String XXTEAEncodeFile(String data, bool useCBC)
         {
-            String plaintext = string.Empty;
             String encodedFileContents = string.Empty;
 
-            using (StreamReader reader = new StreamReader(path, Encoding.UTF8))
+            if (data.Length == 0) { return ""; }
+
+            List<uint> packedPlaintext = new List<uint>(BytesToWords((new UTF8Encoding()).GetBytes(data)));
+
+            List<uint> encodedWords = new List<uint>();
+            List<uint> block = new List<uint>();
+
+            var iterator = 0;
+            uint[] previousBlock = new uint[XXTEACipher.N];
+            for (var i = 0; i < XXTEACipher.InitializationVector.Length; i++)
             {
-                plaintext = reader.ReadToEnd();
-
-                if (plaintext.Length == 0) { return ""; }
-
-                List<uint> packedPlaintext = new List<uint>(BytesToWords((new UTF8Encoding()).GetBytes(plaintext)));
-
-                List<uint> encodedWords = new List<uint>();
-                List<uint> block = new List<uint>();
-                
-                var iterator = 0;
-
-                while (iterator < packedPlaintext.Count)
-                {
-                    int blockSize = (iterator + XXTEACipher.N <= packedPlaintext.Count) ? XXTEACipher.N :packedPlaintext.Count-iterator;
-                    block = packedPlaintext.GetRange(iterator, blockSize);
-                    uint[] blockArray = block.ToArray();
-
-                    if (blockArray.Length == 1) { blockArray[0] = 0; }
-
-
-                    XXTEACipher.EncodeBlock(ref blockArray);
-
-                    encodedWords.AddRange(blockArray);
-                   
-                    iterator += XXTEACipher.N;
-                }
-
-                encodedFileContents = Convert.ToBase64String(WordsToBytes(encodedWords.ToArray()));
+                previousBlock[i] = XXTEACipher.InitializationVector[i];
             }
+
+            while (iterator < packedPlaintext.Count)
+            {
+                int blockSize = (iterator + XXTEACipher.N <= packedPlaintext.Count) ? XXTEACipher.N : packedPlaintext.Count - iterator;
+                block = packedPlaintext.GetRange(iterator, blockSize);
+
+                uint[] blockArray = block.ToArray();
+
+
+                if (blockArray.Length == 1) { blockArray[0] = 0; }
+
+                if (useCBC)
+                {
+                    for (var i = 0; i < blockArray.Length; i++)
+                    {
+                        blockArray[i] ^= previousBlock[i];
+                    }
+                    
+                }
+                XXTEACipher.EncodeBlock(ref blockArray);
+                previousBlock = blockArray;
+                encodedWords.AddRange(blockArray);
+
+                iterator += XXTEACipher.N;
+            }
+
+            encodedFileContents = Convert.ToBase64String(WordsToBytes(encodedWords.ToArray()));
+
             return encodedFileContents;
         }
-        private String XXTEADecodeFile(String path)
+        private String XXTEADecodeFile(String data, bool useCBC)
         {
-            String ciphertext = string.Empty;
             String decodedFileContents = string.Empty;
 
-            using (StreamReader reader = new StreamReader(path, Encoding.UTF8))
+            if (data.Length == 0) { return ""; }
+
+            List<uint> packedCiphertext = new List<uint>(BytesToWords(Convert.FromBase64String(data)));
+
+            List<uint> block = new List<uint>();
+
+            var iterator = 0;
+            uint[] previousBlock = new uint[XXTEACipher.N];
+            for (var i = 0; i < XXTEACipher.InitializationVector.Length; i++)
             {
-                ciphertext = reader.ReadToEnd();
+                previousBlock[i] = XXTEACipher.InitializationVector[i];
+            }
+            while (iterator < packedCiphertext.Count)
+            {
+                int blockSize = (iterator + XXTEACipher.N <= packedCiphertext.Count) ? XXTEACipher.N : packedCiphertext.Count - iterator;
+                block = packedCiphertext.GetRange(iterator, blockSize);
+                uint[] blockArray = block.ToArray();
 
-                if (ciphertext.Length == 0) { return ""; }
-
-                List<uint> packedCiphertext = new List<uint>(BytesToWords(Convert.FromBase64String(ciphertext)));
+                if (blockArray.Length == 1) { blockArray[0] = 0; }
 
 
-                List<uint> block = new List<uint>();
-
-                var iterator = 0;
-
-                while (iterator < packedCiphertext.Count)
+                XXTEACipher.DecodeBlock(ref blockArray);
+                if (useCBC)
                 {
-                    int blockSize = (iterator + XXTEACipher.N <= packedCiphertext.Count) ? XXTEACipher.N : packedCiphertext.Count - iterator;
-                    block = packedCiphertext.GetRange(iterator, blockSize);
-                    uint[] blockArray = block.ToArray();
-
-                    if (blockArray.Length == 1) { blockArray[0] = 0; }
-
-
-                    XXTEACipher.DecodeBlock(ref blockArray);
-
-                    decodedFileContents += (new UTF8Encoding()).GetString(WordsToBytes(blockArray));
-                    iterator += XXTEACipher.N;
+                    for (var i = 0; i < blockArray.Length; i++)
+                    {
+                        blockArray[i] ^= previousBlock[i];
+                    }
+                    previousBlock = block.ToArray();
                 }
-
-
+                decodedFileContents += (new UTF8Encoding()).GetString(WordsToBytes(blockArray));
+                iterator += XXTEACipher.N;
             }
             return decodedFileContents;
         }
@@ -630,6 +661,8 @@ namespace ZIDomaci
                 LoadVoteBitsBtn.Enabled = !fsw.EnableRaisingEvents;
                 LoadGlobalSeedBtn.Enabled = !fsw.EnableRaisingEvents;
                 LoadRegisterSeedsBtn.Enabled = !fsw.EnableRaisingEvents;
+                EnableDisableCBCBtn.Enabled = A51Cipher.InitializationVector != 0;
+                A51LoadInitializationVectorBtn.Enabled = !fsw.EnableRaisingEvents;
             }
             else if (SelectedCipher == "XXTEA")
             {
@@ -640,7 +673,14 @@ namespace ZIDomaci
 
                 LoadKeysBtn.Enabled = !fsw.EnableRaisingEvents;
                 LoadBlockSizeBtn.Enabled = !fsw.EnableRaisingEvents;
+                EnableDisableCBCBtn.Enabled = XXTEACipher.InitializationVector != "";
+                XXTEALoadInitializationVectorBtn.Enabled = !fsw.EnableRaisingEvents;
             }
+            CBCEnabled = CBCEnabled && EnableDisableCBCBtn.Enabled;
+            EnableDisableCBCBtn.Text = CBCEnabled ? "Disable CBC" : "Enable CBC";
+            CBCStatusTbx.Text = CBCEnabled ? "Enabled" : "Disabled";
+            CBCStatusTbx.ForeColor = CBCEnabled ? Color.Green : Color.Red;
+
             //FSW and other buttons/status display
             CipherStatusTbx.Text = Initialized ? "Initialized" : "Not Initialized";
             CipherStatusTbx.ForeColor = Initialized ? Color.Green : Color.Red;
@@ -648,9 +688,8 @@ namespace ZIDomaci
             EnableDisableWatcherBtn.Enabled = Initialized && !string.IsNullOrEmpty(OutputFolder) && !string.IsNullOrEmpty(fsw.Path) && fsw.Path.CompareTo(".") != 0;
             ManualEncodeBtn.Enabled = !fsw.EnableRaisingEvents && !string.IsNullOrEmpty(OutputFolder) && Initialized;
             ManualDecodeBtn.Enabled = (!fsw.EnableRaisingEvents && Initialized);
+            EnableDisableCBCBtn.Enabled = EnableDisableCBCBtn.Enabled && !fsw.EnableRaisingEvents;
             InitializeCipherBtn.Enabled = !fsw.EnableRaisingEvents && !Initialized;
-
-
 
         }
 
@@ -795,6 +834,14 @@ namespace ZIDomaci
         {
             CurrentBlockSizeTbx.Text = XXTEACipher.N.ToString();
         }
+        private void XXTEADisplayInitializationVector()
+        {
+            XXTEACurrentInitializationVectorTbx.Text = XXTEACipher.InitializationVector;
+        }
+        private void XXTEAClearInitializationVector()
+        {
+            XXTEACurrentInitializationVectorTbx.Text = "";
+        }
         #endregion
 
         #region Load/Save to file XXTEA
@@ -813,6 +860,7 @@ namespace ZIDomaci
                         tw.WriteLine(XXTEACipher.K3.ToString());
                         tw.WriteLine(XXTEACipher.K4.ToString());
                         tw.WriteLine(XXTEACipher.N.ToString());
+                        tw.WriteLine(XXTEACipher.InitializationVector.ToString());
                     }
                 }
             }
@@ -837,10 +885,10 @@ namespace ZIDomaci
                             uint k3 = uint.Parse(tr.ReadLine());
                             uint k4 = uint.Parse(tr.ReadLine());
                             ushort n = ushort.Parse(tr.ReadLine());
-
+                            string iv = tr.ReadLine();
                             XXTEACipher.LoadKeys(k1, k2, k3, k4);
                             XXTEACipher.LoadBlockSize(n);
-
+                            XXTEACipher.InitializationVector = iv;
                             DisplayCurrentKeys();
                             DisplayCurrentBlockSize();
 
@@ -875,6 +923,72 @@ namespace ZIDomaci
             if (fsw.EnableRaisingEvents)    // Disable tab switching if file watcher is active
             {
                 e.Cancel = true;
+            }
+        }
+
+        private void EnableDisableCBCBtn_Click(object sender, EventArgs e)
+        {
+            if (SelectedCipher == "A51" && A51Cipher.InitializationVector != 0 ||
+                SelectedCipher == "XXTEA" && XXTEACipher.InitializationVector != "")
+            {
+                CBCEnabled = !CBCEnabled;
+                UpdateUIEnable();
+            }
+            else
+            {
+                MessageBox.Show("Must provide Initialization Vector.");
+            }
+        }
+
+        private void A51LoadInitializationVectorBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ushort IV = ushort.Parse(A51InitializationVectorTbx.Text);
+                A51Cipher.InitializationVector = IV;
+
+                A51DisplayInitializationVector();
+                A51ClearInitializationVector();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Initialization Vector Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                A51Initialized = A51Cipher.IsInitialized();
+                UpdateUIEnable();
+            }
+        }
+
+        private void XXTEALoadInitializationVectorBtn_Click(object sender, EventArgs e)
+        {
+            string vector = XXTEAInitializationVectorTbx.Text.Trim();
+            try
+            {
+                if (XXTEACipher.N == 0)
+                {
+                    MessageBox.Show("Specify block size first", "Initialization Vector Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (vector.Length != XXTEACipher.N)
+                {
+                    MessageBox.Show("Vector must be " + XXTEACipher.N + " characters long without witespaces.", "Initialization Vector Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                XXTEACipher.InitializationVector = XXTEAInitializationVectorTbx.Text.Trim();
+
+                XXTEADisplayInitializationVector();
+                XXTEAClearInitializationVector();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Initialization Vector Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                XXTEAInitialized = XXTEACipher.IsInitialized();
+                UpdateUIEnable();
             }
         }
     }

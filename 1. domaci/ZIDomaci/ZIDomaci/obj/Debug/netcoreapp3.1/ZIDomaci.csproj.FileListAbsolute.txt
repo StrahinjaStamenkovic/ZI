@@ -1,0 +1,16 @@
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\bin\Debug\netcoreapp3.1\ZIDomaci.exe
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\bin\Debug\netcoreapp3.1\ZIDomaci.deps.json
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\bin\Debug\netcoreapp3.1\ZIDomaci.runtimeconfig.json
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\bin\Debug\netcoreapp3.1\ZIDomaci.runtimeconfig.dev.json
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\bin\Debug\netcoreapp3.1\ZIDomaci.dll
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\bin\Debug\netcoreapp3.1\ZIDomaci.pdb
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\obj\Debug\netcoreapp3.1\ZIDomaci.csproj.AssemblyReference.cache
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\obj\Debug\netcoreapp3.1\ZIDomaci.CipherForm.resources
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\obj\Debug\netcoreapp3.1\ZIDomaci.csproj.GenerateResource.cache
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\obj\Debug\netcoreapp3.1\ZIDomaci.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\obj\Debug\netcoreapp3.1\ZIDomaci.AssemblyInfoInputs.cache
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\obj\Debug\netcoreapp3.1\ZIDomaci.AssemblyInfo.cs
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\obj\Debug\netcoreapp3.1\ZIDomaci.csproj.CoreCompileInputs.cache
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\obj\Debug\netcoreapp3.1\ZIDomaci.dll
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\obj\Debug\netcoreapp3.1\ZIDomaci.pdb
+C:\Users\KORISNIK\Desktop\ZI\1. domaci\ZIDomaci\ZIDomaci\obj\Debug\netcoreapp3.1\ZIDomaci.genruntimeconfig.cache

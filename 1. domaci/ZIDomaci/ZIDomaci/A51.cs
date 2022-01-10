@@ -27,6 +27,7 @@ namespace ZIDomaci
 
         public ushort Keystream { get; set; }
 
+        public ushort InitializationVector { get; set; }
         public A51()
         {
             X = new byte[19];
@@ -34,6 +35,8 @@ namespace ZIDomaci
             Z = new byte[23];
 
             Keystream = 0;
+            InitializationVector = 0;
+
         }
         public A51(byte xvb, byte yvb, byte zvb, byte[] xsb, byte[] ysb, byte[] zsb)
         {
@@ -42,6 +45,7 @@ namespace ZIDomaci
             Z = new byte[23];
 
             Keystream = 0;
+            InitializationVector = 0;
 
             LoadVoteBits(xvb, yvb, zvb);
             LoadStepBits(xsb, ysb, zsb);
@@ -174,7 +178,7 @@ namespace ZIDomaci
 
         public bool IsInitialized()
         {
-            return XSeed != 0 && YSeed != 0 && ZSeed != 0 && XStepBits != null && YStepBits != null && ZStepBits != null;
+            return XSeed != 0 && YSeed != 0 && ZSeed != 0 && XStepBits != null && YStepBits != null && ZStepBits != null && InitializationVector!=0;
         }
         
     }

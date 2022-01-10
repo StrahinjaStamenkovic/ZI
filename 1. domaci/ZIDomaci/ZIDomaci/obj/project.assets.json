@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\KORISNIK\\Desktop\\ZI\\Git repo\\ZI\\1. domaci\\ZIDomaci\\ZIDomaci\\ZIDomaci.csproj",
+      "projectUniqueName": "C:\\Users\\KORISNIK\\Desktop\\ZI\\1. domaci\\ZIDomaci\\ZIDomaci\\ZIDomaci.csproj",
       "projectName": "ZIDomaci",
-      "projectPath": "C:\\Users\\KORISNIK\\Desktop\\ZI\\Git repo\\ZI\\1. domaci\\ZIDomaci\\ZIDomaci\\ZIDomaci.csproj",
+      "projectPath": "C:\\Users\\KORISNIK\\Desktop\\ZI\\1. domaci\\ZIDomaci\\ZIDomaci\\ZIDomaci.csproj",
       "packagesPath": "C:\\Users\\KORISNIK\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\KORISNIK\\Desktop\\ZI\\Git repo\\ZI\\1. domaci\\ZIDomaci\\ZIDomaci\\obj\\",
+      "outputPath": "C:\\Users\\KORISNIK\\Desktop\\ZI\\1. domaci\\ZIDomaci\\ZIDomaci\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\KORISNIK\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -63,7 +63,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
       }
     }
   }

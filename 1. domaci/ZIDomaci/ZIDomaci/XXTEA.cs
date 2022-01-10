@@ -14,6 +14,7 @@ namespace ZIDomaci
         public ushort N { get; set; }
         public uint DELTA { get; set; }
 
+        public string InitializationVector { get; set; }
         public XXTEA()
         {
             K1 = 0;
@@ -21,12 +22,14 @@ namespace ZIDomaci
             K3 = 0;
             K4 = 0;
             N = 0;
+            InitializationVector = "";
             DELTA = 0x9e3779b9;
         }
         public XXTEA(uint k1, uint k2, uint k3, uint k4, ushort n)
         {
             LoadKeys(k1, k2, k3, k4);
             N = n;
+            InitializationVector = "";
             DELTA = 0x9e3779b9;
         }
         public void EncodeBlock(ref uint[] vector)
@@ -36,7 +39,7 @@ namespace ZIDomaci
             uint[] key = { K1, K2, K3, K4 };
             Func<uint> MX = () => (((z >> 5 ^ y << 2) + (y >> 3 ^ z << 4)) ^ ((sum ^ y) + (key[(p & 3) ^ e] ^ z)));
             if (vector.Length > 1)
-            {          /* Coding Part */
+            { 
                 rounds = (ushort)(6 + 52 / vector.Length);
                 sum = 0;
                 z = vector[vector.Length - 1];
@@ -49,6 +52,7 @@ namespace ZIDomaci
                         y = vector[p + 1];
                         z = vector[p] += MX();
                     }
+
                     y = vector[0];
                     z = vector[vector.Length - 1] += MX();
                 } while ((--rounds) > 0);
@@ -81,7 +85,7 @@ namespace ZIDomaci
 
         public bool IsInitialized()
         {
-            return K1 != 0 && K2 != 0 && K3 != 0 && K4 != 0 && N != 0;
+            return K1 != 0 && K2 != 0 && K3 != 0 && K4 != 0 && N != 0 && InitializationVector!="";
         }
 
         public void LoadKeys(uint k1, uint k2, uint k3, uint k4)
@@ -95,6 +99,7 @@ namespace ZIDomaci
         public void LoadBlockSize(ushort n)
         {
             N = n;
+            //InitializationVector = new string(new char[n]);
         }
     }
 }

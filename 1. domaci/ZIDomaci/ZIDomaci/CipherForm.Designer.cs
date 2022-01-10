@@ -95,7 +95,17 @@ namespace ZIDomaci
             this.XXTEALoadCipherStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CipherSelectionTc = new System.Windows.Forms.TabControl();
             this.A51tab = new System.Windows.Forms.TabPage();
+            this.A51LoadInitializationVectorBtn = new System.Windows.Forms.Button();
+            this.A51CurrentInitializationVectorTbx = new System.Windows.Forms.TextBox();
+            this.A51CurrentInitializationVectorLbl = new System.Windows.Forms.Label();
+            this.A51InitializationVectorTbx = new System.Windows.Forms.TextBox();
+            this.A51InitializationVectorLbl = new System.Windows.Forms.Label();
             this.XXTEAtab = new System.Windows.Forms.TabPage();
+            this.XXTEALoadInitializationVectorBtn = new System.Windows.Forms.Button();
+            this.XXTEACurrentInitializationVectorTbx = new System.Windows.Forms.TextBox();
+            this.XXTEACurrentInitializationVectorLbl = new System.Windows.Forms.Label();
+            this.XXTEAInitializationVectorTbx = new System.Windows.Forms.TextBox();
+            this.XXTEAInitializationVectorLbl = new System.Windows.Forms.Label();
             this.CurrentBlockSizeLbl = new System.Windows.Forms.Label();
             this.CurrentBlockSizeTbx = new System.Windows.Forms.TextBox();
             this.BlockSizeLbl = new System.Windows.Forms.Label();
@@ -120,6 +130,9 @@ namespace ZIDomaci
             this.KeyFourLbl = new System.Windows.Forms.Label();
             this.ActiveCipherTbx = new System.Windows.Forms.TextBox();
             this.ActiveCipherLbl = new System.Windows.Forms.Label();
+            this.CBCStatusTbx = new System.Windows.Forms.TextBox();
+            this.CBCStatusLbl = new System.Windows.Forms.Label();
+            this.EnableDisableCBCBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.XVoteBitNud)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YVoteBitNud)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ZVoteBitNud)).BeginInit();
@@ -150,7 +163,7 @@ namespace ZIDomaci
             // currentSeedLbl
             // 
             this.currentSeedLbl.AutoSize = true;
-            this.currentSeedLbl.Location = new System.Drawing.Point(361, 5);
+            this.currentSeedLbl.Location = new System.Drawing.Point(8, 56);
             this.currentSeedLbl.Name = "currentSeedLbl";
             this.currentSeedLbl.Size = new System.Drawing.Size(77, 15);
             this.currentSeedLbl.TabIndex = 2;
@@ -158,24 +171,24 @@ namespace ZIDomaci
             // 
             // currentSeedTbx
             // 
-            this.currentSeedTbx.Location = new System.Drawing.Point(361, 23);
+            this.currentSeedTbx.Location = new System.Drawing.Point(8, 74);
             this.currentSeedTbx.Name = "currentSeedTbx";
             this.currentSeedTbx.ReadOnly = true;
-            this.currentSeedTbx.Size = new System.Drawing.Size(279, 23);
+            this.currentSeedTbx.Size = new System.Drawing.Size(188, 23);
             this.currentSeedTbx.TabIndex = 4;
             // 
             // XCurrentSeedTbx
             // 
-            this.XCurrentSeedTbx.Location = new System.Drawing.Point(361, 72);
+            this.XCurrentSeedTbx.Location = new System.Drawing.Point(202, 74);
             this.XCurrentSeedTbx.Name = "XCurrentSeedTbx";
             this.XCurrentSeedTbx.ReadOnly = true;
-            this.XCurrentSeedTbx.Size = new System.Drawing.Size(279, 23);
+            this.XCurrentSeedTbx.Size = new System.Drawing.Size(188, 23);
             this.XCurrentSeedTbx.TabIndex = 8;
             // 
             // XCurrentSeedLbl
             // 
             this.XCurrentSeedLbl.AutoSize = true;
-            this.XCurrentSeedLbl.Location = new System.Drawing.Point(361, 54);
+            this.XCurrentSeedLbl.Location = new System.Drawing.Point(202, 56);
             this.XCurrentSeedLbl.Name = "XCurrentSeedLbl";
             this.XCurrentSeedLbl.Size = new System.Drawing.Size(88, 15);
             this.XCurrentSeedLbl.TabIndex = 7;
@@ -184,7 +197,7 @@ namespace ZIDomaci
             // XSeedLbl
             // 
             this.XSeedLbl.AutoSize = true;
-            this.XSeedLbl.Location = new System.Drawing.Point(8, 54);
+            this.XSeedLbl.Location = new System.Drawing.Point(202, 5);
             this.XSeedLbl.Name = "XSeedLbl";
             this.XSeedLbl.Size = new System.Drawing.Size(45, 15);
             this.XSeedLbl.TabIndex = 6;
@@ -192,23 +205,23 @@ namespace ZIDomaci
             // 
             // inputXSeedTbx
             // 
-            this.inputXSeedTbx.Location = new System.Drawing.Point(8, 72);
+            this.inputXSeedTbx.Location = new System.Drawing.Point(202, 23);
             this.inputXSeedTbx.Name = "inputXSeedTbx";
             this.inputXSeedTbx.Size = new System.Drawing.Size(188, 23);
             this.inputXSeedTbx.TabIndex = 5;
             // 
             // ZCurrentSeedTbx
             // 
-            this.ZCurrentSeedTbx.Location = new System.Drawing.Point(361, 183);
+            this.ZCurrentSeedTbx.Location = new System.Drawing.Point(590, 74);
             this.ZCurrentSeedTbx.Name = "ZCurrentSeedTbx";
             this.ZCurrentSeedTbx.ReadOnly = true;
-            this.ZCurrentSeedTbx.Size = new System.Drawing.Size(279, 23);
+            this.ZCurrentSeedTbx.Size = new System.Drawing.Size(188, 23);
             this.ZCurrentSeedTbx.TabIndex = 16;
             // 
             // ZCurrentSeedLbl
             // 
             this.ZCurrentSeedLbl.AutoSize = true;
-            this.ZCurrentSeedLbl.Location = new System.Drawing.Point(361, 165);
+            this.ZCurrentSeedLbl.Location = new System.Drawing.Point(590, 56);
             this.ZCurrentSeedLbl.Name = "ZCurrentSeedLbl";
             this.ZCurrentSeedLbl.Size = new System.Drawing.Size(88, 15);
             this.ZCurrentSeedLbl.TabIndex = 15;
@@ -217,7 +230,7 @@ namespace ZIDomaci
             // ZSeedLbl
             // 
             this.ZSeedLbl.AutoSize = true;
-            this.ZSeedLbl.Location = new System.Drawing.Point(8, 165);
+            this.ZSeedLbl.Location = new System.Drawing.Point(590, 5);
             this.ZSeedLbl.Name = "ZSeedLbl";
             this.ZSeedLbl.Size = new System.Drawing.Size(45, 15);
             this.ZSeedLbl.TabIndex = 14;
@@ -225,23 +238,23 @@ namespace ZIDomaci
             // 
             // inputZSeedTbx
             // 
-            this.inputZSeedTbx.Location = new System.Drawing.Point(8, 183);
+            this.inputZSeedTbx.Location = new System.Drawing.Point(590, 23);
             this.inputZSeedTbx.Name = "inputZSeedTbx";
             this.inputZSeedTbx.Size = new System.Drawing.Size(188, 23);
             this.inputZSeedTbx.TabIndex = 13;
             // 
             // YCurrentSeedTbx
             // 
-            this.YCurrentSeedTbx.Location = new System.Drawing.Point(361, 128);
+            this.YCurrentSeedTbx.Location = new System.Drawing.Point(396, 74);
             this.YCurrentSeedTbx.Name = "YCurrentSeedTbx";
             this.YCurrentSeedTbx.ReadOnly = true;
-            this.YCurrentSeedTbx.Size = new System.Drawing.Size(279, 23);
+            this.YCurrentSeedTbx.Size = new System.Drawing.Size(177, 23);
             this.YCurrentSeedTbx.TabIndex = 12;
             // 
             // YCurrentSeedLbl
             // 
             this.YCurrentSeedLbl.AutoSize = true;
-            this.YCurrentSeedLbl.Location = new System.Drawing.Point(361, 110);
+            this.YCurrentSeedLbl.Location = new System.Drawing.Point(396, 56);
             this.YCurrentSeedLbl.Name = "YCurrentSeedLbl";
             this.YCurrentSeedLbl.Size = new System.Drawing.Size(88, 15);
             this.YCurrentSeedLbl.TabIndex = 11;
@@ -250,7 +263,7 @@ namespace ZIDomaci
             // YSeedLbl
             // 
             this.YSeedLbl.AutoSize = true;
-            this.YSeedLbl.Location = new System.Drawing.Point(8, 110);
+            this.YSeedLbl.Location = new System.Drawing.Point(396, 5);
             this.YSeedLbl.Name = "YSeedLbl";
             this.YSeedLbl.Size = new System.Drawing.Size(45, 15);
             this.YSeedLbl.TabIndex = 10;
@@ -258,14 +271,14 @@ namespace ZIDomaci
             // 
             // inputYSeedTbx
             // 
-            this.inputYSeedTbx.Location = new System.Drawing.Point(8, 128);
+            this.inputYSeedTbx.Location = new System.Drawing.Point(396, 23);
             this.inputYSeedTbx.Name = "inputYSeedTbx";
             this.inputYSeedTbx.Size = new System.Drawing.Size(188, 23);
             this.inputYSeedTbx.TabIndex = 9;
             // 
             // LoadGlobalSeedBtn
             // 
-            this.LoadGlobalSeedBtn.Location = new System.Drawing.Point(217, 9);
+            this.LoadGlobalSeedBtn.Location = new System.Drawing.Point(788, 9);
             this.LoadGlobalSeedBtn.Name = "LoadGlobalSeedBtn";
             this.LoadGlobalSeedBtn.Size = new System.Drawing.Size(91, 48);
             this.LoadGlobalSeedBtn.TabIndex = 17;
@@ -275,7 +288,7 @@ namespace ZIDomaci
             // 
             // LoadRegisterSeedsBtn
             // 
-            this.LoadRegisterSeedsBtn.Location = new System.Drawing.Point(217, 72);
+            this.LoadRegisterSeedsBtn.Location = new System.Drawing.Point(788, 63);
             this.LoadRegisterSeedsBtn.Name = "LoadRegisterSeedsBtn";
             this.LoadRegisterSeedsBtn.Size = new System.Drawing.Size(91, 48);
             this.LoadRegisterSeedsBtn.TabIndex = 18;
@@ -286,7 +299,7 @@ namespace ZIDomaci
             // ZVoteBitLbl
             // 
             this.ZVoteBitLbl.AutoSize = true;
-            this.ZVoteBitLbl.Location = new System.Drawing.Point(8, 309);
+            this.ZVoteBitLbl.Location = new System.Drawing.Point(234, 134);
             this.ZVoteBitLbl.Name = "ZVoteBitLbl";
             this.ZVoteBitLbl.Size = new System.Drawing.Size(60, 15);
             this.ZVoteBitLbl.TabIndex = 19;
@@ -295,7 +308,7 @@ namespace ZIDomaci
             // YVoteBitLbl
             // 
             this.YVoteBitLbl.AutoSize = true;
-            this.YVoteBitLbl.Location = new System.Drawing.Point(8, 263);
+            this.YVoteBitLbl.Location = new System.Drawing.Point(117, 134);
             this.YVoteBitLbl.Name = "YVoteBitLbl";
             this.YVoteBitLbl.Size = new System.Drawing.Size(60, 15);
             this.YVoteBitLbl.TabIndex = 22;
@@ -304,7 +317,7 @@ namespace ZIDomaci
             // XVoteBitLbl
             // 
             this.XVoteBitLbl.AutoSize = true;
-            this.XVoteBitLbl.Location = new System.Drawing.Point(8, 219);
+            this.XVoteBitLbl.Location = new System.Drawing.Point(8, 134);
             this.XVoteBitLbl.Name = "XVoteBitLbl";
             this.XVoteBitLbl.Size = new System.Drawing.Size(60, 15);
             this.XVoteBitLbl.TabIndex = 24;
@@ -312,7 +325,7 @@ namespace ZIDomaci
             // 
             // XVoteBitNud
             // 
-            this.XVoteBitNud.Location = new System.Drawing.Point(8, 237);
+            this.XVoteBitNud.Location = new System.Drawing.Point(8, 152);
             this.XVoteBitNud.Maximum = new decimal(new int[] {
             18,
             0,
@@ -324,7 +337,7 @@ namespace ZIDomaci
             // 
             // YVoteBitNud
             // 
-            this.YVoteBitNud.Location = new System.Drawing.Point(8, 281);
+            this.YVoteBitNud.Location = new System.Drawing.Point(117, 152);
             this.YVoteBitNud.Maximum = new decimal(new int[] {
             21,
             0,
@@ -336,7 +349,7 @@ namespace ZIDomaci
             // 
             // ZVoteBitNud
             // 
-            this.ZVoteBitNud.Location = new System.Drawing.Point(8, 327);
+            this.ZVoteBitNud.Location = new System.Drawing.Point(234, 152);
             this.ZVoteBitNud.Maximum = new decimal(new int[] {
             22,
             0,
@@ -348,7 +361,7 @@ namespace ZIDomaci
             // 
             // LoadVoteBitsBtn
             // 
-            this.LoadVoteBitsBtn.Location = new System.Drawing.Point(217, 222);
+            this.LoadVoteBitsBtn.Location = new System.Drawing.Point(786, 127);
             this.LoadVoteBitsBtn.Name = "LoadVoteBitsBtn";
             this.LoadVoteBitsBtn.Size = new System.Drawing.Size(91, 48);
             this.LoadVoteBitsBtn.TabIndex = 28;
@@ -358,7 +371,7 @@ namespace ZIDomaci
             // 
             // ZCurrentVoteBitTbx
             // 
-            this.ZCurrentVoteBitTbx.Location = new System.Drawing.Point(361, 327);
+            this.ZCurrentVoteBitTbx.Location = new System.Drawing.Point(234, 202);
             this.ZCurrentVoteBitTbx.Name = "ZCurrentVoteBitTbx";
             this.ZCurrentVoteBitTbx.ReadOnly = true;
             this.ZCurrentVoteBitTbx.Size = new System.Drawing.Size(56, 23);
@@ -367,7 +380,7 @@ namespace ZIDomaci
             // ZCurrentVoteBit
             // 
             this.ZCurrentVoteBit.AutoSize = true;
-            this.ZCurrentVoteBit.Location = new System.Drawing.Point(361, 309);
+            this.ZCurrentVoteBit.Location = new System.Drawing.Point(234, 184);
             this.ZCurrentVoteBit.Name = "ZCurrentVoteBit";
             this.ZCurrentVoteBit.Size = new System.Drawing.Size(103, 15);
             this.ZCurrentVoteBit.TabIndex = 33;
@@ -375,7 +388,7 @@ namespace ZIDomaci
             // 
             // YCurrentVoteBitTbx
             // 
-            this.YCurrentVoteBitTbx.Location = new System.Drawing.Point(361, 281);
+            this.YCurrentVoteBitTbx.Location = new System.Drawing.Point(117, 202);
             this.YCurrentVoteBitTbx.Name = "YCurrentVoteBitTbx";
             this.YCurrentVoteBitTbx.ReadOnly = true;
             this.YCurrentVoteBitTbx.Size = new System.Drawing.Size(56, 23);
@@ -384,7 +397,7 @@ namespace ZIDomaci
             // YCurrentVoteBitLbl
             // 
             this.YCurrentVoteBitLbl.AutoSize = true;
-            this.YCurrentVoteBitLbl.Location = new System.Drawing.Point(361, 263);
+            this.YCurrentVoteBitLbl.Location = new System.Drawing.Point(117, 184);
             this.YCurrentVoteBitLbl.Name = "YCurrentVoteBitLbl";
             this.YCurrentVoteBitLbl.Size = new System.Drawing.Size(103, 15);
             this.YCurrentVoteBitLbl.TabIndex = 31;
@@ -392,7 +405,7 @@ namespace ZIDomaci
             // 
             // XCurrentVoteBitTbx
             // 
-            this.XCurrentVoteBitTbx.Location = new System.Drawing.Point(361, 237);
+            this.XCurrentVoteBitTbx.Location = new System.Drawing.Point(8, 202);
             this.XCurrentVoteBitTbx.Name = "XCurrentVoteBitTbx";
             this.XCurrentVoteBitTbx.ReadOnly = true;
             this.XCurrentVoteBitTbx.Size = new System.Drawing.Size(56, 23);
@@ -401,7 +414,7 @@ namespace ZIDomaci
             // XCurrentVoteBitLbl
             // 
             this.XCurrentVoteBitLbl.AutoSize = true;
-            this.XCurrentVoteBitLbl.Location = new System.Drawing.Point(361, 219);
+            this.XCurrentVoteBitLbl.Location = new System.Drawing.Point(8, 184);
             this.XCurrentVoteBitLbl.Name = "XCurrentVoteBitLbl";
             this.XCurrentVoteBitLbl.Size = new System.Drawing.Size(103, 15);
             this.XCurrentVoteBitLbl.TabIndex = 29;
@@ -410,7 +423,7 @@ namespace ZIDomaci
             // ZStepBitsLbl
             // 
             this.ZStepBitsLbl.AutoSize = true;
-            this.ZStepBitsLbl.Location = new System.Drawing.Point(8, 469);
+            this.ZStepBitsLbl.Location = new System.Drawing.Point(616, 134);
             this.ZStepBitsLbl.Name = "ZStepBitsLbl";
             this.ZStepBitsLbl.Size = new System.Drawing.Size(65, 15);
             this.ZStepBitsLbl.TabIndex = 40;
@@ -418,7 +431,7 @@ namespace ZIDomaci
             // 
             // ZStepBitsTbx
             // 
-            this.ZStepBitsTbx.Location = new System.Drawing.Point(8, 487);
+            this.ZStepBitsTbx.Location = new System.Drawing.Point(616, 152);
             this.ZStepBitsTbx.Name = "ZStepBitsTbx";
             this.ZStepBitsTbx.Size = new System.Drawing.Size(104, 23);
             this.ZStepBitsTbx.TabIndex = 39;
@@ -426,7 +439,7 @@ namespace ZIDomaci
             // YStepBitsLbl
             // 
             this.YStepBitsLbl.AutoSize = true;
-            this.YStepBitsLbl.Location = new System.Drawing.Point(8, 414);
+            this.YStepBitsLbl.Location = new System.Drawing.Point(506, 134);
             this.YStepBitsLbl.Name = "YStepBitsLbl";
             this.YStepBitsLbl.Size = new System.Drawing.Size(65, 15);
             this.YStepBitsLbl.TabIndex = 38;
@@ -434,7 +447,7 @@ namespace ZIDomaci
             // 
             // YStepBitsTbx
             // 
-            this.YStepBitsTbx.Location = new System.Drawing.Point(8, 432);
+            this.YStepBitsTbx.Location = new System.Drawing.Point(506, 152);
             this.YStepBitsTbx.Name = "YStepBitsTbx";
             this.YStepBitsTbx.Size = new System.Drawing.Size(104, 23);
             this.YStepBitsTbx.TabIndex = 37;
@@ -442,7 +455,7 @@ namespace ZIDomaci
             // XStepBitsLbl
             // 
             this.XStepBitsLbl.AutoSize = true;
-            this.XStepBitsLbl.Location = new System.Drawing.Point(8, 358);
+            this.XStepBitsLbl.Location = new System.Drawing.Point(396, 134);
             this.XStepBitsLbl.Name = "XStepBitsLbl";
             this.XStepBitsLbl.Size = new System.Drawing.Size(65, 15);
             this.XStepBitsLbl.TabIndex = 36;
@@ -450,7 +463,7 @@ namespace ZIDomaci
             // 
             // XStepBitsTbx
             // 
-            this.XStepBitsTbx.Location = new System.Drawing.Point(8, 376);
+            this.XStepBitsTbx.Location = new System.Drawing.Point(396, 152);
             this.XStepBitsTbx.Name = "XStepBitsTbx";
             this.XStepBitsTbx.Size = new System.Drawing.Size(104, 23);
             this.XStepBitsTbx.TabIndex = 35;
@@ -458,7 +471,7 @@ namespace ZIDomaci
             // ZCurrentStepBitsLbl
             // 
             this.ZCurrentStepBitsLbl.AutoSize = true;
-            this.ZCurrentStepBitsLbl.Location = new System.Drawing.Point(361, 469);
+            this.ZCurrentStepBitsLbl.Location = new System.Drawing.Point(616, 184);
             this.ZCurrentStepBitsLbl.Name = "ZCurrentStepBitsLbl";
             this.ZCurrentStepBitsLbl.Size = new System.Drawing.Size(108, 15);
             this.ZCurrentStepBitsLbl.TabIndex = 46;
@@ -466,7 +479,7 @@ namespace ZIDomaci
             // 
             // ZCurrentStepBitsTbx
             // 
-            this.ZCurrentStepBitsTbx.Location = new System.Drawing.Point(361, 487);
+            this.ZCurrentStepBitsTbx.Location = new System.Drawing.Point(616, 202);
             this.ZCurrentStepBitsTbx.Name = "ZCurrentStepBitsTbx";
             this.ZCurrentStepBitsTbx.ReadOnly = true;
             this.ZCurrentStepBitsTbx.Size = new System.Drawing.Size(104, 23);
@@ -475,7 +488,7 @@ namespace ZIDomaci
             // YCurrentStepBitsLbl
             // 
             this.YCurrentStepBitsLbl.AutoSize = true;
-            this.YCurrentStepBitsLbl.Location = new System.Drawing.Point(361, 414);
+            this.YCurrentStepBitsLbl.Location = new System.Drawing.Point(506, 184);
             this.YCurrentStepBitsLbl.Name = "YCurrentStepBitsLbl";
             this.YCurrentStepBitsLbl.Size = new System.Drawing.Size(108, 15);
             this.YCurrentStepBitsLbl.TabIndex = 44;
@@ -483,7 +496,7 @@ namespace ZIDomaci
             // 
             // YCurrentStepBitsTbx
             // 
-            this.YCurrentStepBitsTbx.Location = new System.Drawing.Point(361, 432);
+            this.YCurrentStepBitsTbx.Location = new System.Drawing.Point(506, 202);
             this.YCurrentStepBitsTbx.Name = "YCurrentStepBitsTbx";
             this.YCurrentStepBitsTbx.ReadOnly = true;
             this.YCurrentStepBitsTbx.Size = new System.Drawing.Size(104, 23);
@@ -492,7 +505,7 @@ namespace ZIDomaci
             // XCurrentStepBitsLbl
             // 
             this.XCurrentStepBitsLbl.AutoSize = true;
-            this.XCurrentStepBitsLbl.Location = new System.Drawing.Point(361, 358);
+            this.XCurrentStepBitsLbl.Location = new System.Drawing.Point(396, 184);
             this.XCurrentStepBitsLbl.Name = "XCurrentStepBitsLbl";
             this.XCurrentStepBitsLbl.Size = new System.Drawing.Size(108, 15);
             this.XCurrentStepBitsLbl.TabIndex = 42;
@@ -500,7 +513,7 @@ namespace ZIDomaci
             // 
             // XCurrentStepBitsTbx
             // 
-            this.XCurrentStepBitsTbx.Location = new System.Drawing.Point(361, 376);
+            this.XCurrentStepBitsTbx.Location = new System.Drawing.Point(396, 202);
             this.XCurrentStepBitsTbx.Name = "XCurrentStepBitsTbx";
             this.XCurrentStepBitsTbx.ReadOnly = true;
             this.XCurrentStepBitsTbx.Size = new System.Drawing.Size(104, 23);
@@ -508,7 +521,7 @@ namespace ZIDomaci
             // 
             // LoadStepBitsBtn
             // 
-            this.LoadStepBitsBtn.Location = new System.Drawing.Point(217, 362);
+            this.LoadStepBitsBtn.Location = new System.Drawing.Point(786, 184);
             this.LoadStepBitsBtn.Name = "LoadStepBitsBtn";
             this.LoadStepBitsBtn.Size = new System.Drawing.Size(91, 48);
             this.LoadStepBitsBtn.TabIndex = 47;
@@ -518,7 +531,7 @@ namespace ZIDomaci
             // 
             // InitializeCipherBtn
             // 
-            this.InitializeCipherBtn.Location = new System.Drawing.Point(12, 700);
+            this.InitializeCipherBtn.Location = new System.Drawing.Point(12, 582);
             this.InitializeCipherBtn.Name = "InitializeCipherBtn";
             this.InitializeCipherBtn.Size = new System.Drawing.Size(91, 48);
             this.InitializeCipherBtn.TabIndex = 48;
@@ -529,7 +542,7 @@ namespace ZIDomaci
             // ManualDecodeBtn
             // 
             this.ManualDecodeBtn.Enabled = false;
-            this.ManualDecodeBtn.Location = new System.Drawing.Point(230, 700);
+            this.ManualDecodeBtn.Location = new System.Drawing.Point(230, 582);
             this.ManualDecodeBtn.Name = "ManualDecodeBtn";
             this.ManualDecodeBtn.Size = new System.Drawing.Size(91, 48);
             this.ManualDecodeBtn.TabIndex = 49;
@@ -548,7 +561,7 @@ namespace ZIDomaci
             // 
             // SetWatchFolderBtn
             // 
-            this.SetWatchFolderBtn.Location = new System.Drawing.Point(479, 700);
+            this.SetWatchFolderBtn.Location = new System.Drawing.Point(693, 582);
             this.SetWatchFolderBtn.Name = "SetWatchFolderBtn";
             this.SetWatchFolderBtn.Size = new System.Drawing.Size(91, 48);
             this.SetWatchFolderBtn.TabIndex = 50;
@@ -559,7 +572,7 @@ namespace ZIDomaci
             // CurrentlyWatchingLbl
             // 
             this.CurrentlyWatchingLbl.AutoSize = true;
-            this.CurrentlyWatchingLbl.Location = new System.Drawing.Point(365, 572);
+            this.CurrentlyWatchingLbl.Location = new System.Drawing.Point(579, 454);
             this.CurrentlyWatchingLbl.Name = "CurrentlyWatchingLbl";
             this.CurrentlyWatchingLbl.Size = new System.Drawing.Size(113, 15);
             this.CurrentlyWatchingLbl.TabIndex = 51;
@@ -567,7 +580,7 @@ namespace ZIDomaci
             // 
             // CurrentlyWatchingTbx
             // 
-            this.CurrentlyWatchingTbx.Location = new System.Drawing.Point(365, 599);
+            this.CurrentlyWatchingTbx.Location = new System.Drawing.Point(579, 481);
             this.CurrentlyWatchingTbx.Name = "CurrentlyWatchingTbx";
             this.CurrentlyWatchingTbx.ReadOnly = true;
             this.CurrentlyWatchingTbx.Size = new System.Drawing.Size(302, 23);
@@ -576,7 +589,7 @@ namespace ZIDomaci
             // EnableDisableWatcherBtn
             // 
             this.EnableDisableWatcherBtn.Enabled = false;
-            this.EnableDisableWatcherBtn.Location = new System.Drawing.Point(346, 700);
+            this.EnableDisableWatcherBtn.Location = new System.Drawing.Point(469, 582);
             this.EnableDisableWatcherBtn.Name = "EnableDisableWatcherBtn";
             this.EnableDisableWatcherBtn.Size = new System.Drawing.Size(91, 48);
             this.EnableDisableWatcherBtn.TabIndex = 53;
@@ -587,7 +600,7 @@ namespace ZIDomaci
             // ManualEncodeBtn
             // 
             this.ManualEncodeBtn.Enabled = false;
-            this.ManualEncodeBtn.Location = new System.Drawing.Point(133, 700);
+            this.ManualEncodeBtn.Location = new System.Drawing.Point(133, 582);
             this.ManualEncodeBtn.Name = "ManualEncodeBtn";
             this.ManualEncodeBtn.Size = new System.Drawing.Size(91, 48);
             this.ManualEncodeBtn.TabIndex = 54;
@@ -597,7 +610,7 @@ namespace ZIDomaci
             // 
             // SetOutputFolderBtn
             // 
-            this.SetOutputFolderBtn.Location = new System.Drawing.Point(576, 700);
+            this.SetOutputFolderBtn.Location = new System.Drawing.Point(790, 582);
             this.SetOutputFolderBtn.Name = "SetOutputFolderBtn";
             this.SetOutputFolderBtn.Size = new System.Drawing.Size(91, 48);
             this.SetOutputFolderBtn.TabIndex = 55;
@@ -607,7 +620,7 @@ namespace ZIDomaci
             // 
             // CurrentOutputFolderTbx
             // 
-            this.CurrentOutputFolderTbx.Location = new System.Drawing.Point(365, 663);
+            this.CurrentOutputFolderTbx.Location = new System.Drawing.Point(579, 545);
             this.CurrentOutputFolderTbx.Name = "CurrentOutputFolderTbx";
             this.CurrentOutputFolderTbx.ReadOnly = true;
             this.CurrentOutputFolderTbx.Size = new System.Drawing.Size(302, 23);
@@ -616,7 +629,7 @@ namespace ZIDomaci
             // CurrentOutputFolderLbl
             // 
             this.CurrentOutputFolderLbl.AutoSize = true;
-            this.CurrentOutputFolderLbl.Location = new System.Drawing.Point(365, 636);
+            this.CurrentOutputFolderLbl.Location = new System.Drawing.Point(579, 518);
             this.CurrentOutputFolderLbl.Name = "CurrentOutputFolderLbl";
             this.CurrentOutputFolderLbl.Size = new System.Drawing.Size(127, 15);
             this.CurrentOutputFolderLbl.TabIndex = 56;
@@ -625,7 +638,7 @@ namespace ZIDomaci
             // CipherStatusLbl
             // 
             this.CipherStatusLbl.AutoSize = true;
-            this.CipherStatusLbl.Location = new System.Drawing.Point(12, 636);
+            this.CipherStatusLbl.Location = new System.Drawing.Point(12, 518);
             this.CipherStatusLbl.Name = "CipherStatusLbl";
             this.CipherStatusLbl.Size = new System.Drawing.Size(80, 15);
             this.CipherStatusLbl.TabIndex = 58;
@@ -635,7 +648,7 @@ namespace ZIDomaci
             // 
             this.CipherStatusTbx.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.CipherStatusTbx.ForeColor = System.Drawing.Color.Red;
-            this.CipherStatusTbx.Location = new System.Drawing.Point(12, 662);
+            this.CipherStatusTbx.Location = new System.Drawing.Point(12, 544);
             this.CipherStatusTbx.Name = "CipherStatusTbx";
             this.CipherStatusTbx.ReadOnly = true;
             this.CipherStatusTbx.Size = new System.Drawing.Size(100, 23);
@@ -649,7 +662,7 @@ namespace ZIDomaci
             this.XTEAToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(674, 24);
+            this.menuStrip.Size = new System.Drawing.Size(895, 24);
             this.menuStrip.TabIndex = 60;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -666,14 +679,14 @@ namespace ZIDomaci
             // 
             this.A51SaveCipherMenuStripItem.Enabled = false;
             this.A51SaveCipherMenuStripItem.Name = "A51SaveCipherMenuStripItem";
-            this.A51SaveCipherMenuStripItem.Size = new System.Drawing.Size(180, 22);
+            this.A51SaveCipherMenuStripItem.Size = new System.Drawing.Size(167, 22);
             this.A51SaveCipherMenuStripItem.Text = "Save Cipher State";
             this.A51SaveCipherMenuStripItem.Click += new System.EventHandler(this.A51SaveCipherMenuStripItem_Click);
             // 
             // A51LoadCipherMenuStripItem
             // 
             this.A51LoadCipherMenuStripItem.Name = "A51LoadCipherMenuStripItem";
-            this.A51LoadCipherMenuStripItem.Size = new System.Drawing.Size(180, 22);
+            this.A51LoadCipherMenuStripItem.Size = new System.Drawing.Size(167, 22);
             this.A51LoadCipherMenuStripItem.Text = "Load Cipher State";
             this.A51LoadCipherMenuStripItem.Click += new System.EventHandler(this.A51LoadCipherMenuStripItem_Click);
             // 
@@ -690,14 +703,14 @@ namespace ZIDomaci
             // 
             this.XXTEASaveCipherStateToolStripMenuItem.Enabled = false;
             this.XXTEASaveCipherStateToolStripMenuItem.Name = "XXTEASaveCipherStateToolStripMenuItem";
-            this.XXTEASaveCipherStateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.XXTEASaveCipherStateToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.XXTEASaveCipherStateToolStripMenuItem.Text = "Save Cipher State";
             this.XXTEASaveCipherStateToolStripMenuItem.Click += new System.EventHandler(this.XXTEASaveCipherStateToolStripMenuItem_Click);
             // 
             // XXTEALoadCipherStateToolStripMenuItem
             // 
             this.XXTEALoadCipherStateToolStripMenuItem.Name = "XXTEALoadCipherStateToolStripMenuItem";
-            this.XXTEALoadCipherStateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.XXTEALoadCipherStateToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.XXTEALoadCipherStateToolStripMenuItem.Text = "Load Cipher State";
             this.XXTEALoadCipherStateToolStripMenuItem.Click += new System.EventHandler(this.XXTEALloadCipherStateToolStripMenuItem_Click);
             // 
@@ -708,15 +721,20 @@ namespace ZIDomaci
             this.CipherSelectionTc.Location = new System.Drawing.Point(0, 27);
             this.CipherSelectionTc.Name = "CipherSelectionTc";
             this.CipherSelectionTc.SelectedIndex = 0;
-            this.CipherSelectionTc.Size = new System.Drawing.Size(674, 542);
+            this.CipherSelectionTc.Size = new System.Drawing.Size(893, 361);
             this.CipherSelectionTc.TabIndex = 61;
             this.CipherSelectionTc.SelectedIndexChanged += new System.EventHandler(this.CipherSelectionTc_SelectedIndexChanged);
             this.CipherSelectionTc.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.CipherSelectionTc_Selecting);
             // 
             // A51tab
             // 
+            this.A51tab.Controls.Add(this.A51LoadInitializationVectorBtn);
+            this.A51tab.Controls.Add(this.A51CurrentInitializationVectorTbx);
+            this.A51tab.Controls.Add(this.A51CurrentInitializationVectorLbl);
             this.A51tab.Controls.Add(this.inputSeedTbx);
+            this.A51tab.Controls.Add(this.A51InitializationVectorTbx);
             this.A51tab.Controls.Add(this.SeedLbl);
+            this.A51tab.Controls.Add(this.A51InitializationVectorLbl);
             this.A51tab.Controls.Add(this.currentSeedLbl);
             this.A51tab.Controls.Add(this.currentSeedTbx);
             this.A51tab.Controls.Add(this.inputXSeedTbx);
@@ -762,13 +780,61 @@ namespace ZIDomaci
             this.A51tab.Location = new System.Drawing.Point(4, 24);
             this.A51tab.Name = "A51tab";
             this.A51tab.Padding = new System.Windows.Forms.Padding(3);
-            this.A51tab.Size = new System.Drawing.Size(666, 514);
+            this.A51tab.Size = new System.Drawing.Size(885, 333);
             this.A51tab.TabIndex = 0;
             this.A51tab.Text = "A51";
             this.A51tab.UseVisualStyleBackColor = true;
             // 
+            // A51LoadInitializationVectorBtn
+            // 
+            this.A51LoadInitializationVectorBtn.Location = new System.Drawing.Point(786, 253);
+            this.A51LoadInitializationVectorBtn.Name = "A51LoadInitializationVectorBtn";
+            this.A51LoadInitializationVectorBtn.Size = new System.Drawing.Size(91, 56);
+            this.A51LoadInitializationVectorBtn.TabIndex = 67;
+            this.A51LoadInitializationVectorBtn.Text = "Load Initialization Vector";
+            this.A51LoadInitializationVectorBtn.UseVisualStyleBackColor = true;
+            this.A51LoadInitializationVectorBtn.Click += new System.EventHandler(this.A51LoadInitializationVectorBtn_Click);
+            // 
+            // A51CurrentInitializationVectorTbx
+            // 
+            this.A51CurrentInitializationVectorTbx.Location = new System.Drawing.Point(8, 304);
+            this.A51CurrentInitializationVectorTbx.Name = "A51CurrentInitializationVectorTbx";
+            this.A51CurrentInitializationVectorTbx.ReadOnly = true;
+            this.A51CurrentInitializationVectorTbx.Size = new System.Drawing.Size(188, 23);
+            this.A51CurrentInitializationVectorTbx.TabIndex = 69;
+            // 
+            // A51CurrentInitializationVectorLbl
+            // 
+            this.A51CurrentInitializationVectorLbl.AutoSize = true;
+            this.A51CurrentInitializationVectorLbl.Location = new System.Drawing.Point(8, 286);
+            this.A51CurrentInitializationVectorLbl.Name = "A51CurrentInitializationVectorLbl";
+            this.A51CurrentInitializationVectorLbl.Size = new System.Drawing.Size(153, 15);
+            this.A51CurrentInitializationVectorLbl.TabIndex = 70;
+            this.A51CurrentInitializationVectorLbl.Text = "Current Initialization Vector:";
+            // 
+            // A51InitializationVectorTbx
+            // 
+            this.A51InitializationVectorTbx.Location = new System.Drawing.Point(8, 253);
+            this.A51InitializationVectorTbx.Name = "A51InitializationVectorTbx";
+            this.A51InitializationVectorTbx.Size = new System.Drawing.Size(188, 23);
+            this.A51InitializationVectorTbx.TabIndex = 67;
+            // 
+            // A51InitializationVectorLbl
+            // 
+            this.A51InitializationVectorLbl.AutoSize = true;
+            this.A51InitializationVectorLbl.Location = new System.Drawing.Point(8, 235);
+            this.A51InitializationVectorLbl.Name = "A51InitializationVectorLbl";
+            this.A51InitializationVectorLbl.Size = new System.Drawing.Size(110, 15);
+            this.A51InitializationVectorLbl.TabIndex = 68;
+            this.A51InitializationVectorLbl.Text = "Initialization Vector:";
+            // 
             // XXTEAtab
             // 
+            this.XXTEAtab.Controls.Add(this.XXTEALoadInitializationVectorBtn);
+            this.XXTEAtab.Controls.Add(this.XXTEACurrentInitializationVectorTbx);
+            this.XXTEAtab.Controls.Add(this.XXTEACurrentInitializationVectorLbl);
+            this.XXTEAtab.Controls.Add(this.XXTEAInitializationVectorTbx);
+            this.XXTEAtab.Controls.Add(this.XXTEAInitializationVectorLbl);
             this.XXTEAtab.Controls.Add(this.CurrentBlockSizeLbl);
             this.XXTEAtab.Controls.Add(this.CurrentBlockSizeTbx);
             this.XXTEAtab.Controls.Add(this.BlockSizeLbl);
@@ -794,23 +860,66 @@ namespace ZIDomaci
             this.XXTEAtab.Location = new System.Drawing.Point(4, 24);
             this.XXTEAtab.Name = "XXTEAtab";
             this.XXTEAtab.Padding = new System.Windows.Forms.Padding(3);
-            this.XXTEAtab.Size = new System.Drawing.Size(666, 514);
+            this.XXTEAtab.Size = new System.Drawing.Size(885, 333);
             this.XXTEAtab.TabIndex = 1;
             this.XXTEAtab.Text = "XXTEA";
             this.XXTEAtab.UseVisualStyleBackColor = true;
             // 
+            // XXTEALoadInitializationVectorBtn
+            // 
+            this.XXTEALoadInitializationVectorBtn.Location = new System.Drawing.Point(788, 253);
+            this.XXTEALoadInitializationVectorBtn.Name = "XXTEALoadInitializationVectorBtn";
+            this.XXTEALoadInitializationVectorBtn.Size = new System.Drawing.Size(91, 56);
+            this.XXTEALoadInitializationVectorBtn.TabIndex = 41;
+            this.XXTEALoadInitializationVectorBtn.Text = "Load Initialization Vector";
+            this.XXTEALoadInitializationVectorBtn.UseVisualStyleBackColor = true;
+            this.XXTEALoadInitializationVectorBtn.Click += new System.EventHandler(this.XXTEALoadInitializationVectorBtn_Click);
+            // 
+            // XXTEACurrentInitializationVectorTbx
+            // 
+            this.XXTEACurrentInitializationVectorTbx.Location = new System.Drawing.Point(8, 304);
+            this.XXTEACurrentInitializationVectorTbx.Name = "XXTEACurrentInitializationVectorTbx";
+            this.XXTEACurrentInitializationVectorTbx.ReadOnly = true;
+            this.XXTEACurrentInitializationVectorTbx.Size = new System.Drawing.Size(188, 23);
+            this.XXTEACurrentInitializationVectorTbx.TabIndex = 39;
+            // 
+            // XXTEACurrentInitializationVectorLbl
+            // 
+            this.XXTEACurrentInitializationVectorLbl.AutoSize = true;
+            this.XXTEACurrentInitializationVectorLbl.Location = new System.Drawing.Point(8, 286);
+            this.XXTEACurrentInitializationVectorLbl.Name = "XXTEACurrentInitializationVectorLbl";
+            this.XXTEACurrentInitializationVectorLbl.Size = new System.Drawing.Size(153, 15);
+            this.XXTEACurrentInitializationVectorLbl.TabIndex = 40;
+            this.XXTEACurrentInitializationVectorLbl.Text = "Current Initialization Vector:";
+            // 
+            // XXTEAInitializationVectorTbx
+            // 
+            this.XXTEAInitializationVectorTbx.Location = new System.Drawing.Point(8, 253);
+            this.XXTEAInitializationVectorTbx.Name = "XXTEAInitializationVectorTbx";
+            this.XXTEAInitializationVectorTbx.Size = new System.Drawing.Size(188, 23);
+            this.XXTEAInitializationVectorTbx.TabIndex = 37;
+            // 
+            // XXTEAInitializationVectorLbl
+            // 
+            this.XXTEAInitializationVectorLbl.AutoSize = true;
+            this.XXTEAInitializationVectorLbl.Location = new System.Drawing.Point(8, 235);
+            this.XXTEAInitializationVectorLbl.Name = "XXTEAInitializationVectorLbl";
+            this.XXTEAInitializationVectorLbl.Size = new System.Drawing.Size(110, 15);
+            this.XXTEAInitializationVectorLbl.TabIndex = 38;
+            this.XXTEAInitializationVectorLbl.Text = "Initialization Vector:";
+            // 
             // CurrentBlockSizeLbl
             // 
             this.CurrentBlockSizeLbl.AutoSize = true;
-            this.CurrentBlockSizeLbl.Location = new System.Drawing.Point(361, 227);
+            this.CurrentBlockSizeLbl.Location = new System.Drawing.Point(8, 164);
             this.CurrentBlockSizeLbl.Name = "CurrentBlockSizeLbl";
-            this.CurrentBlockSizeLbl.Size = new System.Drawing.Size(144, 15);
+            this.CurrentBlockSizeLbl.Size = new System.Drawing.Size(148, 15);
             this.CurrentBlockSizeLbl.TabIndex = 35;
-            this.CurrentBlockSizeLbl.Text = "Current Block Size (bytes):";
+            this.CurrentBlockSizeLbl.Text = "Current Block Size (words):";
             // 
             // CurrentBlockSizeTbx
             // 
-            this.CurrentBlockSizeTbx.Location = new System.Drawing.Point(361, 245);
+            this.CurrentBlockSizeTbx.Location = new System.Drawing.Point(8, 182);
             this.CurrentBlockSizeTbx.Name = "CurrentBlockSizeTbx";
             this.CurrentBlockSizeTbx.ReadOnly = true;
             this.CurrentBlockSizeTbx.Size = new System.Drawing.Size(56, 23);
@@ -819,7 +928,7 @@ namespace ZIDomaci
             // BlockSizeLbl
             // 
             this.BlockSizeLbl.AutoSize = true;
-            this.BlockSizeLbl.Location = new System.Drawing.Point(8, 227);
+            this.BlockSizeLbl.Location = new System.Drawing.Point(8, 113);
             this.BlockSizeLbl.Name = "BlockSizeLbl";
             this.BlockSizeLbl.Size = new System.Drawing.Size(105, 15);
             this.BlockSizeLbl.TabIndex = 32;
@@ -827,7 +936,7 @@ namespace ZIDomaci
             // 
             // BlockSizeNud
             // 
-            this.BlockSizeNud.Location = new System.Drawing.Point(8, 245);
+            this.BlockSizeNud.Location = new System.Drawing.Point(8, 131);
             this.BlockSizeNud.Maximum = new decimal(new int[] {
             128,
             0,
@@ -839,7 +948,7 @@ namespace ZIDomaci
             // 
             // LoadBlockSizeBtn
             // 
-            this.LoadBlockSizeBtn.Location = new System.Drawing.Point(217, 230);
+            this.LoadBlockSizeBtn.Location = new System.Drawing.Point(788, 106);
             this.LoadBlockSizeBtn.Name = "LoadBlockSizeBtn";
             this.LoadBlockSizeBtn.Size = new System.Drawing.Size(91, 48);
             this.LoadBlockSizeBtn.TabIndex = 34;
@@ -849,7 +958,7 @@ namespace ZIDomaci
             // 
             // LoadKeysBtn
             // 
-            this.LoadKeysBtn.Location = new System.Drawing.Point(217, 7);
+            this.LoadKeysBtn.Location = new System.Drawing.Point(786, 37);
             this.LoadKeysBtn.Name = "LoadKeysBtn";
             this.LoadKeysBtn.Size = new System.Drawing.Size(91, 48);
             this.LoadKeysBtn.TabIndex = 31;
@@ -860,7 +969,7 @@ namespace ZIDomaci
             // CurrentKeyOneLbl
             // 
             this.CurrentKeyOneLbl.AutoSize = true;
-            this.CurrentKeyOneLbl.Location = new System.Drawing.Point(361, 3);
+            this.CurrentKeyOneLbl.Location = new System.Drawing.Point(8, 54);
             this.CurrentKeyOneLbl.Name = "CurrentKeyOneLbl";
             this.CurrentKeyOneLbl.Size = new System.Drawing.Size(81, 15);
             this.CurrentKeyOneLbl.TabIndex = 23;
@@ -868,16 +977,16 @@ namespace ZIDomaci
             // 
             // CurrentKeyOneTbx
             // 
-            this.CurrentKeyOneTbx.Location = new System.Drawing.Point(361, 21);
+            this.CurrentKeyOneTbx.Location = new System.Drawing.Point(8, 72);
             this.CurrentKeyOneTbx.Name = "CurrentKeyOneTbx";
             this.CurrentKeyOneTbx.ReadOnly = true;
-            this.CurrentKeyOneTbx.Size = new System.Drawing.Size(279, 23);
+            this.CurrentKeyOneTbx.Size = new System.Drawing.Size(188, 23);
             this.CurrentKeyOneTbx.TabIndex = 24;
             // 
             // CurrentKeyTwoLbl
             // 
             this.CurrentKeyTwoLbl.AutoSize = true;
-            this.CurrentKeyTwoLbl.Location = new System.Drawing.Point(361, 52);
+            this.CurrentKeyTwoLbl.Location = new System.Drawing.Point(202, 54);
             this.CurrentKeyTwoLbl.Name = "CurrentKeyTwoLbl";
             this.CurrentKeyTwoLbl.Size = new System.Drawing.Size(81, 15);
             this.CurrentKeyTwoLbl.TabIndex = 25;
@@ -885,16 +994,16 @@ namespace ZIDomaci
             // 
             // CurrentKeyTwoTbx
             // 
-            this.CurrentKeyTwoTbx.Location = new System.Drawing.Point(361, 70);
+            this.CurrentKeyTwoTbx.Location = new System.Drawing.Point(202, 72);
             this.CurrentKeyTwoTbx.Name = "CurrentKeyTwoTbx";
             this.CurrentKeyTwoTbx.ReadOnly = true;
-            this.CurrentKeyTwoTbx.Size = new System.Drawing.Size(279, 23);
+            this.CurrentKeyTwoTbx.Size = new System.Drawing.Size(188, 23);
             this.CurrentKeyTwoTbx.TabIndex = 26;
             // 
             // CurrentKeyThreeLbl
             // 
             this.CurrentKeyThreeLbl.AutoSize = true;
-            this.CurrentKeyThreeLbl.Location = new System.Drawing.Point(361, 108);
+            this.CurrentKeyThreeLbl.Location = new System.Drawing.Point(396, 54);
             this.CurrentKeyThreeLbl.Name = "CurrentKeyThreeLbl";
             this.CurrentKeyThreeLbl.Size = new System.Drawing.Size(81, 15);
             this.CurrentKeyThreeLbl.TabIndex = 27;
@@ -902,16 +1011,16 @@ namespace ZIDomaci
             // 
             // CurrentKeyThreeTbx
             // 
-            this.CurrentKeyThreeTbx.Location = new System.Drawing.Point(361, 126);
+            this.CurrentKeyThreeTbx.Location = new System.Drawing.Point(396, 72);
             this.CurrentKeyThreeTbx.Name = "CurrentKeyThreeTbx";
             this.CurrentKeyThreeTbx.ReadOnly = true;
-            this.CurrentKeyThreeTbx.Size = new System.Drawing.Size(279, 23);
+            this.CurrentKeyThreeTbx.Size = new System.Drawing.Size(188, 23);
             this.CurrentKeyThreeTbx.TabIndex = 28;
             // 
             // CurrentKeyFourLbl
             // 
             this.CurrentKeyFourLbl.AutoSize = true;
-            this.CurrentKeyFourLbl.Location = new System.Drawing.Point(361, 163);
+            this.CurrentKeyFourLbl.Location = new System.Drawing.Point(590, 54);
             this.CurrentKeyFourLbl.Name = "CurrentKeyFourLbl";
             this.CurrentKeyFourLbl.Size = new System.Drawing.Size(81, 15);
             this.CurrentKeyFourLbl.TabIndex = 29;
@@ -919,10 +1028,10 @@ namespace ZIDomaci
             // 
             // CurrentKeyFourTbx
             // 
-            this.CurrentKeyFourTbx.Location = new System.Drawing.Point(361, 181);
+            this.CurrentKeyFourTbx.Location = new System.Drawing.Point(590, 72);
             this.CurrentKeyFourTbx.Name = "CurrentKeyFourTbx";
             this.CurrentKeyFourTbx.ReadOnly = true;
-            this.CurrentKeyFourTbx.Size = new System.Drawing.Size(279, 23);
+            this.CurrentKeyFourTbx.Size = new System.Drawing.Size(188, 23);
             this.CurrentKeyFourTbx.TabIndex = 30;
             // 
             // KeyOneTbx
@@ -943,7 +1052,7 @@ namespace ZIDomaci
             // 
             // KeyTwoTbx
             // 
-            this.KeyTwoTbx.Location = new System.Drawing.Point(8, 70);
+            this.KeyTwoTbx.Location = new System.Drawing.Point(202, 21);
             this.KeyTwoTbx.Name = "KeyTwoTbx";
             this.KeyTwoTbx.Size = new System.Drawing.Size(188, 23);
             this.KeyTwoTbx.TabIndex = 17;
@@ -951,7 +1060,7 @@ namespace ZIDomaci
             // KeyTwoLbl
             // 
             this.KeyTwoLbl.AutoSize = true;
-            this.KeyTwoLbl.Location = new System.Drawing.Point(8, 52);
+            this.KeyTwoLbl.Location = new System.Drawing.Point(202, 3);
             this.KeyTwoLbl.Name = "KeyTwoLbl";
             this.KeyTwoLbl.Size = new System.Drawing.Size(38, 15);
             this.KeyTwoLbl.TabIndex = 18;
@@ -959,7 +1068,7 @@ namespace ZIDomaci
             // 
             // KeyThreeTbx
             // 
-            this.KeyThreeTbx.Location = new System.Drawing.Point(8, 126);
+            this.KeyThreeTbx.Location = new System.Drawing.Point(396, 21);
             this.KeyThreeTbx.Name = "KeyThreeTbx";
             this.KeyThreeTbx.Size = new System.Drawing.Size(188, 23);
             this.KeyThreeTbx.TabIndex = 19;
@@ -967,7 +1076,7 @@ namespace ZIDomaci
             // KeyThreeLbl
             // 
             this.KeyThreeLbl.AutoSize = true;
-            this.KeyThreeLbl.Location = new System.Drawing.Point(8, 108);
+            this.KeyThreeLbl.Location = new System.Drawing.Point(396, 3);
             this.KeyThreeLbl.Name = "KeyThreeLbl";
             this.KeyThreeLbl.Size = new System.Drawing.Size(38, 15);
             this.KeyThreeLbl.TabIndex = 20;
@@ -975,7 +1084,7 @@ namespace ZIDomaci
             // 
             // KeyFourTbx
             // 
-            this.KeyFourTbx.Location = new System.Drawing.Point(8, 181);
+            this.KeyFourTbx.Location = new System.Drawing.Point(590, 21);
             this.KeyFourTbx.Name = "KeyFourTbx";
             this.KeyFourTbx.Size = new System.Drawing.Size(188, 23);
             this.KeyFourTbx.TabIndex = 21;
@@ -983,7 +1092,7 @@ namespace ZIDomaci
             // KeyFourLbl
             // 
             this.KeyFourLbl.AutoSize = true;
-            this.KeyFourLbl.Location = new System.Drawing.Point(8, 163);
+            this.KeyFourLbl.Location = new System.Drawing.Point(590, 3);
             this.KeyFourLbl.Name = "KeyFourLbl";
             this.KeyFourLbl.Size = new System.Drawing.Size(38, 15);
             this.KeyFourLbl.TabIndex = 22;
@@ -993,7 +1102,7 @@ namespace ZIDomaci
             // 
             this.ActiveCipherTbx.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ActiveCipherTbx.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.ActiveCipherTbx.Location = new System.Drawing.Point(12, 599);
+            this.ActiveCipherTbx.Location = new System.Drawing.Point(12, 481);
             this.ActiveCipherTbx.Name = "ActiveCipherTbx";
             this.ActiveCipherTbx.ReadOnly = true;
             this.ActiveCipherTbx.Size = new System.Drawing.Size(100, 23);
@@ -1003,17 +1112,51 @@ namespace ZIDomaci
             // ActiveCipherLbl
             // 
             this.ActiveCipherLbl.AutoSize = true;
-            this.ActiveCipherLbl.Location = new System.Drawing.Point(12, 573);
+            this.ActiveCipherLbl.Location = new System.Drawing.Point(12, 455);
             this.ActiveCipherLbl.Name = "ActiveCipherLbl";
             this.ActiveCipherLbl.Size = new System.Drawing.Size(81, 15);
             this.ActiveCipherLbl.TabIndex = 62;
             this.ActiveCipherLbl.Text = "Active Cipher:";
             // 
+            // CBCStatusTbx
+            // 
+            this.CBCStatusTbx.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.CBCStatusTbx.ForeColor = System.Drawing.Color.Red;
+            this.CBCStatusTbx.Location = new System.Drawing.Point(12, 418);
+            this.CBCStatusTbx.Name = "CBCStatusTbx";
+            this.CBCStatusTbx.ReadOnly = true;
+            this.CBCStatusTbx.Size = new System.Drawing.Size(100, 23);
+            this.CBCStatusTbx.TabIndex = 65;
+            this.CBCStatusTbx.Text = "Disabled";
+            // 
+            // CBCStatusLbl
+            // 
+            this.CBCStatusLbl.AutoSize = true;
+            this.CBCStatusLbl.Location = new System.Drawing.Point(12, 392);
+            this.CBCStatusLbl.Name = "CBCStatusLbl";
+            this.CBCStatusLbl.Size = new System.Drawing.Size(67, 15);
+            this.CBCStatusLbl.TabIndex = 64;
+            this.CBCStatusLbl.Text = "CBC status:";
+            // 
+            // EnableDisableCBCBtn
+            // 
+            this.EnableDisableCBCBtn.Enabled = false;
+            this.EnableDisableCBCBtn.Location = new System.Drawing.Point(362, 582);
+            this.EnableDisableCBCBtn.Name = "EnableDisableCBCBtn";
+            this.EnableDisableCBCBtn.Size = new System.Drawing.Size(91, 48);
+            this.EnableDisableCBCBtn.TabIndex = 66;
+            this.EnableDisableCBCBtn.Text = "Enable CBC";
+            this.EnableDisableCBCBtn.UseVisualStyleBackColor = true;
+            this.EnableDisableCBCBtn.Click += new System.EventHandler(this.EnableDisableCBCBtn_Click);
+            // 
             // CipherForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(674, 760);
+            this.ClientSize = new System.Drawing.Size(895, 646);
+            this.Controls.Add(this.EnableDisableCBCBtn);
+            this.Controls.Add(this.CBCStatusTbx);
+            this.Controls.Add(this.CBCStatusLbl);
             this.Controls.Add(this.ActiveCipherTbx);
             this.Controls.Add(this.ActiveCipherLbl);
             this.Controls.Add(this.menuStrip);
@@ -1031,10 +1174,10 @@ namespace ZIDomaci
             this.Controls.Add(this.InitializeCipherBtn);
             this.Controls.Add(this.CipherSelectionTc);
             this.MainMenuStrip = this.menuStrip;
-            this.MaximumSize = new System.Drawing.Size(690, 799);
-            this.MinimumSize = new System.Drawing.Size(690, 799);
+            this.MaximumSize = new System.Drawing.Size(911, 685);
+            this.MinimumSize = new System.Drawing.Size(911, 685);
             this.Name = "CipherForm";
-            this.Text = "A51 Cipher";
+            this.Text = "Cipher";
             ((System.ComponentModel.ISupportInitialize)(this.XVoteBitNud)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YVoteBitNud)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ZVoteBitNud)).EndInit();
@@ -1145,6 +1288,19 @@ namespace ZIDomaci
         private System.Windows.Forms.ToolStripMenuItem XXTEALoadCipherStateToolStripMenuItem;
         private System.Windows.Forms.TextBox ActiveCipherTbx;
         private System.Windows.Forms.Label ActiveCipherLbl;
+        private System.Windows.Forms.Button EnableDisableCBCBtn;
+        private System.Windows.Forms.TextBox CBCStatusTbx;
+        private System.Windows.Forms.Label CBCStatusLbl;
+        private System.Windows.Forms.Button A51LoadInitializationVectorBtn;
+        private System.Windows.Forms.TextBox A51CurrentInitializationVectorTbx;
+        private System.Windows.Forms.Label A51CurrentInitializationVectorLbl;
+        private System.Windows.Forms.TextBox A51InitializationVectorTbx;
+        private System.Windows.Forms.Label A51InitializationVectorLbl;
+        private System.Windows.Forms.Button XXTEALoadInitializationVectorBtn;
+        private System.Windows.Forms.TextBox XXTEACurrentInitializationVectorTbx;
+        private System.Windows.Forms.Label XXTEACurrentInitializationVectorLbl;
+        private System.Windows.Forms.TextBox XXTEAInitializationVectorTbx;
+        private System.Windows.Forms.Label XXTEAInitializationVectorLbl;
     }
 }
 
